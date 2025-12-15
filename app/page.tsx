@@ -561,7 +561,7 @@ mm.add(
     // desktop
     isDesktop: "(min-width: 768px)"
   },
-  (ctx) => {
+  (ctx: any) => {
     const { isMobile, isDesktop } = ctx.conditions;
 
     // MOBILE VERSION 
