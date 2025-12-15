@@ -1,6 +1,7 @@
 'use client';
 import React, { useRef, useLayoutEffect, useState, useEffect } from 'react';
 import Link from "next/link";
+import type { SVGProps } from "react";
 
 // --------------------------- ICONS ---------------------------
 const SearchIcon = (props: SVGProps<SVGSVGElement>) => (
