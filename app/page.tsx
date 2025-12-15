@@ -881,7 +881,9 @@ function HomePage() {
 						className="hero-bg-img absolute left-1/2 -translate-x-1/2"
 						style={{
 							width: "100%",
-							height: "auto",
+							height: "100%",
+							objectFit: "cover",
+							objectPosition: "center",
 							filter: "blur(3px) brightness(0.8)",
 							transformOrigin: "top center",
 						}}
