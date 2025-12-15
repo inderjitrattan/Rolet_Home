@@ -119,3 +119,9 @@ html {
   right: 40%;
   transform: rotate(140deg);
 }
+
+@media (max-width: 767px) {
+  .leaves-wrapper {
+    display: none !important;
+  }
+}
