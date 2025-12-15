@@ -1,59 +1,13 @@
 'use client';
 import React, { useRef, useLayoutEffect, useState, useEffect } from 'react';
 import Link from "next/link";
-import type { SVGProps } from "react";
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
-// --------------------------- ICONS ---------------------------
-const SearchIcon = (props: SVGProps<SVGSVGElement>) => (
-  <svg
-    {...props}
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <circle cx="11" cy="11" r="8" />
-    <path d="M21 21l-4.35-4.35" />
-  </svg>
-);
-
-const ShoppingCartIcon = (props: SVGProps<SVGSVGElement>) => (
-  <svg
-    {...props}
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <circle cx="8" cy="21" r="1" />
-    <circle cx="19" cy="21" r="1" />
-    <path d="M2.05 2.05h2l2.6 12.3c.7 2 2.7 3.7 4.7 3.7h8" />
-    <path d="M17 6H3" />
-    <path d="M18 13.5L20 7" />
-  </svg>
-);
-
-const UserIcon = (props: SVGProps<SVGSVGElement>) => (
-  <svg
-    {...props}
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
-    <circle cx="12" cy="7" r="4" />
-  </svg>
-);
+// Register GSAP plugins
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 
 // --------------------------- DATA ---------------------------
@@ -81,12 +35,11 @@ useEffect(() => {
 
   const heroRef = useRef<HTMLDivElement | null>(null);
   const bgImgRef = useRef<HTMLImageElement | null>(null);
-  const bagLeft = useRef(null);
-  const bagCenter = useRef(null);
-  const bagRight = useRef(null);
+  const bagLeft = useRef<HTMLImageElement | null>(null);
+  const bagCenter = useRef<HTMLImageElement | null>(null);
+  const bagRight = useRef<HTMLImageElement | null>(null);
 
   const [isMobile, setIsMobile] = useState(false);
-  const [gsapLoaded, setGsapLoaded] = useState(false);
   const [bgReady, setBgReady] = useState(false);
 
   const mainProductImg = '/images/product/product-main.png';
@@ -97,42 +50,6 @@ useEffect(() => {
   const incenseHolderImg = '/images/product/Holder.png';
   const podiumBaseImg = '/images/product/podium-base.png';
   const bgImgSrc = "/images/backgrounds/forest-bg.jpg";
-
-  // Load GSAP (safe: keeps original approach but sets gsapLoaded when available)
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
-
-    if (typeof window.gsap === 'undefined') {
-      const s = document.createElement('script');
-      s.src = 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js';
-      s.onload = () => {
-        const st = document.createElement('script');
-        st.src = 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js';
-        st.onload = () => {
-          if (window.gsap && window.ScrollTrigger) {
-            try {
-              window.gsap.registerPlugin(window.ScrollTrigger);
-            } catch (e) {
-              /* already registered or safe-fail */
-            }
-            setGsapLoaded(true);
-          }
-        };
-        document.head.appendChild(st);
-      };
-      document.head.appendChild(s);
-    } else {
-      // If GSAP already present, ensure plugin is registered
-      if (window.gsap && typeof window.ScrollTrigger !== 'undefined' && !window.gsap.ScrollTrigger) {
-        try {
-          window.gsap.registerPlugin(window.ScrollTrigger);
-        } catch (e) {
-          /* no-op */
-        }
-      }
-      setGsapLoaded(true);
-    }
-  }, []);
 
   // Wait for background image to load — avoid using bgImgRef.current in deps
   useEffect(() => {
@@ -145,8 +62,16 @@ useEffect(() => {
     }
 
     const onLoad = () => setBgReady(true);
+    const onError = () => {
+      // Set ready even on error to prevent animation hang
+      setBgReady(true);
+    };
     img.addEventListener('load', onLoad);
-    return () => img.removeEventListener('load', onLoad);
+    img.addEventListener('error', onError);
+    return () => {
+      img.removeEventListener('load', onLoad);
+      img.removeEventListener('error', onError);
+    };
   }, []); // intentionally empty deps - ref shouldn't be in deps
 
   // Resize handler (kept very small and safe)
@@ -170,13 +95,10 @@ useEffect(() => {
   // GSAP Timeline — use isomorphic layout effect to avoid SSR warnings
   useIsomorphicLayoutEffect(() => {
     if (typeof window === 'undefined') return;
-    if (!gsapLoaded || !bgReady) return;
+    if (!bgReady) return;
     if (!heroRef.current || !bgImgRef.current) return;
 
     setIsMobile(window.innerWidth < 768);
-
-    const gsap = window.gsap;
-    if (!gsap) return;
 
     const ctx = gsap.context(() => {
 
@@ -201,19 +123,16 @@ const heroTL = gsap.timeline({
 
 // ------------------ Anti-glitch + force scroll top ------------------
 window.history.scrollRestoration = "manual";
-window.ScrollTrigger.addEventListener("refresh", () => {
+ScrollTrigger.addEventListener("refresh", () => {
   document.documentElement.classList.remove("gsap-init");
   window.scrollTo(0, 0);
 });
 
 
-      // ------------------ Background Intro ------------------
-      heroTL.fromTo(
-        bgImgRef.current,
-        { filter: "blur(8px) brightness(0.35)", autoAlpha: 0 },
-        { filter: "blur(3px) brightness(0.9)", autoAlpha: 1, duration: 1.5, ease: "power2.out" },
-        0
-      );
+      // bgReady) return;
+    if (!heroRef.current || !bgImgRef.current) return;
+
+    setIsMobile(window.innerWidth < 768)
 
       // ------------------ Leaves Slide In After Black Screen ------------------
 heroTL.from(
@@ -484,7 +403,7 @@ heroTL.add(() => {
         heroTL.fromTo(`.feature-${f.id}`, fromVars, toVars, "+=0.5");
 
         if (f.id === 3) {
-          heroTL.to(".incense", { rotation: 340, duration: 1,}, "<");
+          heroTL.to(".incense", { rotation: 340, duration: 1 }, "<");
         }
 
         heroTL.to(`.feature-${f.id}`, { opacity: 0, y: -20, duration: 0.6 }, "+=1");
@@ -561,8 +480,8 @@ mm.add(
     // desktop
     isDesktop: "(min-width: 768px)"
   },
-  (ctx: any) => {
-    const { isMobile, isDesktop } = ctx.conditions;
+  (ctx) => {
+    const { isMobile, isDesktop } = ctx.conditions!;
 
     // MOBILE VERSION 
     if (isMobile) {
@@ -657,7 +576,7 @@ mm.add(
     });
 
     return () => ctx.revert();
-  }, [gsapLoaded, bgReady, isMobile]); // keep dependencies sensible
+  }, [bgReady, isMobile]); // keep dependencies sensible
 
   // --------------------------- CONTENT ---------------------------
   const heroContent = (
@@ -720,16 +639,7 @@ mm.add(
     />
   </div>
 
-  {/* DESKTOP OVERRIDES */}
-  <style jsx>{`
-    @media (min-width: 768px) {
-      .incense-holder {
-        width: "60%",
-        top: "85%",
-        left: "70%",
-      }
-    }
-  `}</style>
+  {/* DESKTOP OVERRIDES - styles already applied via inline style */}
 </div>
 
 
@@ -763,20 +673,20 @@ mm.add(
           <p className="mb-4 text-green-200 text-[22px] md:text-[32px]" style={{ fontFamily: '"Afacad", sans-serif' }}>
             Unveil a world of refined aromas crafted to awaken the senses and elevate your everyday rituals.
           </p>
-          <Link href="/your-link" className="inline-block">
+          <Link href="/products" className="inline-block">
               <button className="px-8 py-3 bg-white text-black font-semibold tracking-wider rounded-[25px] shadow-lg hover:bg-gray-100 transition-colors">EXPLORE NOW</button>
           </Link>
         </div>
 
         {/* Bottom Showcase */}
-<div className="absolute bottom-0 left-0 right-0 flex flex-col items-center justify-center pb-24">
+<div className="absolute bottom-0 left-0 right-0 flex flex-col items-center justify-center">
 
   {/* Bags Row */}
   <div
     className="
       relative z-10 flex justify-center items-end w-full max-w-4xl
       bottom-[12%]           /* mobile */
-      md:bottom-[13mm]         /* desktop */
+      md:bottom-[24mm]         /* desktop */
     "
   >
     <img
@@ -811,7 +721,8 @@ mm.add(
   // --------------------------- RENDER ---------------------------
   return (
     <div className="min-h-[300vh] font-['Inter']">
-      <section ref={heroRef} className="relative h-screen overflow-hidden">
+      <section ref={heroRef} className="relative w-full overflow-hidden" style={{ height: "100svh" }}>
+
         <div className="hero-bg absolute inset-0 overflow-hidden pointer-events-none">
           <img
             ref={bgImgRef}
@@ -823,13 +734,13 @@ mm.add(
         </div>
         {/* Floating Leaves */}
         <div className="leaves-wrapper pointer-events-none absolute inset-0 overflow-visible">
-          <img src="/Leaves-04.png" className="leaf leaf-1" />
-          <img src="/Leaves-05.png" className="leaf leaf-2" />
-          <img src="/Leaves-03.png" className="leaf leaf-3" />
-          <img src="/Leaves-02.png" className="leaf leaf-4" />
-          <img src="/Leaves-04.png" className="leaf leaf-5" />
-          <img src="/Leaves-03.png" className="leaf leaf-6" />
-          <img src="/Leaves-04.png" className="leaf leaf-7" />
+          <img src="/Leaves-04.png" alt="Decorative leaf 1" className="leaf leaf-1" />
+          <img src="/Leaves-05.png" alt="Decorative leaf 2" className="leaf leaf-2" />
+          <img src="/Leaves-03.png" alt="Decorative leaf 3" className="leaf leaf-3" />
+          <img src="/Leaves-02.png" alt="Decorative leaf 4" className="leaf leaf-4" />
+          <img src="/Leaves-04.png" alt="Decorative leaf 5" className="leaf leaf-5" />
+          <img src="/Leaves-03.png" alt="Decorative leaf 6" className="leaf leaf-6" />
+          <img src="/Leaves-04.png" alt="Decorative leaf 7" className="leaf leaf-7" />
         </div>
         {heroContent}
       </section>
