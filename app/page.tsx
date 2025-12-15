@@ -79,7 +79,7 @@ useEffect(() => {
   document.documentElement.classList.add("gsap-init");
 }, []);
 
-  const heroRef = useRef(null);
+  const heroRef = useRef<HTMLDivElement | null>(null);
   const bgImgRef = useRef<HTMLImageElement | null>(null);
   const bagLeft = useRef(null);
   const bagCenter = useRef(null);
