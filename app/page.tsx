@@ -3,7 +3,7 @@ import React, { useRef, useLayoutEffect, useState, useEffect } from 'react';
 import Link from "next/link";
 
 // --------------------------- ICONS ---------------------------
-const SearchIcon = (props) => (
+const SearchIcon = (props: SVGProps<SVGSVGElement>) => (
   <svg
     {...props}
     xmlns="http://www.w3.org/2000/svg"
@@ -19,7 +19,7 @@ const SearchIcon = (props) => (
   </svg>
 );
 
-const ShoppingCartIcon = (props) => (
+const ShoppingCartIcon = (props: SVGProps<SVGSVGElement>) => (
   <svg
     {...props}
     xmlns="http://www.w3.org/2000/svg"
@@ -38,7 +38,7 @@ const ShoppingCartIcon = (props) => (
   </svg>
 );
 
-const UserIcon = (props) => (
+const UserIcon = (props: SVGProps<SVGSVGElement>) => (
   <svg
     {...props}
     xmlns="http://www.w3.org/2000/svg"
@@ -53,6 +53,7 @@ const UserIcon = (props) => (
     <circle cx="12" cy="7" r="4" />
   </svg>
 );
+
 
 // --------------------------- DATA ---------------------------
 const featuresData = [
