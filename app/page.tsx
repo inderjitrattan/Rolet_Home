@@ -151,7 +151,7 @@ useEffect(() => {
 
   // Resize handler (kept very small and safe)
   useEffect(() => {
-    let t;
+    let t: number | undefined;
     const onResize = () => {
       clearTimeout(t);
       t = setTimeout(() => {
