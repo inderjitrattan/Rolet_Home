@@ -46,7 +46,6 @@ body {
   .hero-bg-img {
     position: fixed !important;
     top: 0;
-    left: 50%;
     transform: translateX(-50%) !important;
     height: 100vh !important;
     width: auto !important;
