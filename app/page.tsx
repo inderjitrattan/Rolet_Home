@@ -39,7 +39,7 @@ const responsiveConfig = {
 			container: "bottom-[12%]",
 			maxWidth: "max-w-md",
 			left: "w-[48%]",
-			center: "w-[52%]",
+			center: "w-[42%]",
 			right: "w-[48%]",
 		},
 		tablet: {
