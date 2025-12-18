@@ -927,15 +927,7 @@ ScrollTrigger.config({
 {!bgReady && (
   <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black text-white">
     <div className="flex flex-col items-center gap-4">
-      <span
-        className="text-[28px] tracking-widest"
-        style={{ fontFamily: '"Sangkala", sans-serif' }}
-      >
-        Rolet
-      </span>
-
       <div className="w-12 h-12 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-
       <span
         className="text-xs tracking-[0.3em] text-white/70"
         style={{ fontFamily: '"Afacad", sans-serif' }}
