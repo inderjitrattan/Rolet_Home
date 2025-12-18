@@ -36,7 +36,7 @@ const responsiveConfig = {
 	},
 	bags: {
 		mobile: {
-			container: "bottom-[12%]",
+			container: "bottom-[8mm]",
 			maxWidth: "max-w-md",
 			left: "w-[48%]",
 			center: "w-[42%]",
@@ -587,7 +587,7 @@ function HomePage() {
 							".incense-container",
 							{
 								xPercent: -45,
-								yPercent: 50,
+								yPercent: 40,
 								rotation: 0,
 								scale: 0.8,
 								duration: 1.4,
@@ -647,11 +647,34 @@ function HomePage() {
 
 			heroTL.to(".incense-holder", { opacity: 1, duration: 0.5 }, "<");
 
-			heroTL.fromTo(
-				".cta-final",
-				{ opacity: 0, y: -230 },
-				{ opacity: 1, y: -320, duration: 1.0 },
-				"-=1.4",
+			// ------------------ CTA Final (responsive) ------------------
+			const mm2 = gsap.matchMedia();
+			mm2.add(
+				{
+					isMobile: "(max-width: 767px)",
+					isDesktop: "(min-width: 768px)",
+				},
+				(ctx) => {
+					const { isMobile, isDesktop } = ctx.conditions!;
+
+					if (isMobile) {
+						heroTL.fromTo(
+							".cta-final",
+							{ opacity: 0, y: -230 },
+							{ opacity: 1, y: -190, duration: 1.0 },
+							"-=1.4",
+						);
+					}
+
+					if (isDesktop) {
+						heroTL.fromTo(
+							".cta-final",
+							{ opacity: 0, y: -230 },
+							{ opacity: 1, y: -290, duration: 1.0 },
+							"-=1.4",
+						);
+					}
+				},
 			);
 
 			heroTL.fromTo(
@@ -693,18 +716,28 @@ function HomePage() {
 				"<",
 			);
 
-			// ------------------ Background Scroll Sync ------------------
-			const totalDuration = heroTL.duration();
+// ------------------ Background Scroll Sync ------------------
+const totalDuration = heroTL.duration();
 
-			// Instead of creating a nested gsap.context (which caused leak), ensure DOM exists then animate
-			const mobile = window.innerWidth < 768;
-			if (!mobile && bgImgRef.current) {
-				heroTL.to(
-					bgImgRef.current,
-					{ yPercent: -maxMovePercent, ease: "none", duration: totalDuration },
-					0,
-				);
-			}
+// Reduce movement on mobile instead of disabling it
+const bgMove = isMobile ? maxMovePercent * 0.35 : maxMovePercent;
+
+if (bgImgRef.current) {
+  heroTL.to(
+    bgImgRef.current,
+    {
+      yPercent: -bgMove,
+      ease: "none",
+      duration: totalDuration,
+    },
+    0 // IMPORTANT: start at beginning of timeline
+  );
+}
+ScrollTrigger.config({
+  ignoreMobileResize: true,
+});
+
+
 		});
 
 		return () => ctx.revert();
@@ -726,7 +759,7 @@ function HomePage() {
 					</h1>
 
 					<p
-						className="mt-4 text-[16px] md:text-[25px] text-green-200 leading-relaxed md:leading-normal md:mt-6"
+						className="mt-4 text-[15px] md:text-[25px] text-green-200 leading-relaxed md:leading-normal md:mt-6"
 						style={{ fontFamily: '"Afacad", sans-serif' }}
 					>
 						Rooted in tradition, perfected through craftsmanship
@@ -809,7 +842,7 @@ function HomePage() {
 				{/* CTA */}
 				<div className="cta-final absolute opacity-0 flex flex-col items-center justify-center">
 					<p
-						className="mb-4 text-green-200 text-[22px] md:text-[32px]"
+						className="mb-4 text-green-200 text-[18px] md:text-[32px]"
 						style={{ fontFamily: '"Afacad", sans-serif' }}
 					>
 						Unveil a world of refined aromas crafted to awaken the senses and
@@ -873,21 +906,14 @@ function HomePage() {
 				className="relative w-full overflow-hidden"
 				style={{ height: "100svh" }}
 			>
-				<div className="hero-bg absolute inset-0 overflow-hidden pointer-events-none">
-					<img
-						ref={bgImgRef}
-						src={bgImgSrc}
-						alt="Forest background"
-						className="hero-bg-img absolute left-1/2 -translate-x-1/2"
-						style={{
-							width: "100%",
-							height: "100%",
-							objectFit: "cover",
-							objectPosition: "center",
-							filter: "blur(3px) brightness(0.8)",
-							transformOrigin: "top center",
-						}}
-					/>
+			<div className="hero-bg absolute inset-0 overflow-hidden pointer-events-none">
+				<img
+            		ref={bgImgRef}
+            		src={bgImgSrc}
+            		alt="Forest background"
+            		className="hero-bg-img absolute left-1/2 -translate-x-1/2"
+            		style={{ width: '100%', height: 'auto', filter: 'blur(3px) brightness(0.8)', transformOrigin: 'top center' }}
+          		/>
 				</div>
 				{/* Floating Leaves */}
 				<div className="leaves-wrapper pointer-events-none absolute inset-0 overflow-visible">
