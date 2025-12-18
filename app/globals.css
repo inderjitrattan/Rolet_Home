@@ -125,3 +125,21 @@ html {
     display: none !important;
   }
 }
+
+@keyframes scrollLine {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(200%);
+    opacity: 0;
+  }
+}
+
+.animate-scrollLine {
+  animation: scrollLine 1.6s infinite ease-in-out;
+}

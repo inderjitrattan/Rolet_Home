@@ -36,7 +36,7 @@ const responsiveConfig = {
 	},
 	bags: {
 		mobile: {
-			container: "top-[30mm]",
+			container: "top-[32mm]",
 			maxWidth: "max-w-md",
 			left: "w-[48%]",
 			center: "w-[42%]",
@@ -61,7 +61,7 @@ const responsiveConfig = {
 		mobile: {
 			height: "h-[24vh]",
 			backgroundSize: "bg-[length:180%]",
-			backgroundPosition: "bg-[center_top_27mm]",
+			backgroundPosition: "bg-[center_top_25mm]",
 		},
 		tablet: {
 			height: "md:h-[40vh]",
@@ -217,6 +217,14 @@ function HomePage() {
 
 			setIsMobile(window.innerWidth < 768);
 
+// ------------------ Scroll Indicator ------------------
+// Hide scroll indicator when headline appears
+heroTL.to(
+	".scroll-indicator",
+	{ opacity: 0, duration: 0.6 },
+	0.2,
+);
+
 			// ------------------ Leaves Slide In After Black Screen ------------------
 			heroTL.from(
 				".leaf-1",
@@ -297,7 +305,7 @@ function HomePage() {
 					ease: "power3.out",
 				},
 				"<+=0.2",
-			);
+			);	
 
 			// ------------------ Headline ------------------
 			heroTL
@@ -587,7 +595,7 @@ function HomePage() {
 							".incense-container",
 							{
 								xPercent: -45,
-								yPercent: 40,
+								yPercent: 37,
 								rotation: 0,
 								scale: 0.8,
 								duration: 1.4,
@@ -747,6 +755,20 @@ ScrollTrigger.config({
 	const heroContent = (
 		<div className="relative z-10 flex flex-col items-center justify-center h-full text-center text-white px-4">
 			<div className="absolute inset-0 flex flex-col items-center justify-center">
+{/* SCROLL INDICATOR */}
+<div className="scroll-indicator fixed top-[20%] left-1/2 -translate-x-1/2 z-30 flex flex-col items-center gap-2">
+  <span
+    className="text-[12px] tracking-[0.3em] text-white/80"
+    style={{ fontFamily: '"Afacad", sans-serif' }}
+  >
+    SCROLL
+  </span>
+
+  <div className="w-[2px] h-10 bg-white/70 relative overflow-hidden">
+    <span className="absolute top-0 left-0 w-full h-4 bg-white animate-scrollLine" />
+  </div>
+</div>
+
 				{/* Headline */}
 				<div className="hero-headline absolute text-center px-4">
 					<h1
@@ -901,6 +923,29 @@ ScrollTrigger.config({
 	// --------------------------- RENDER ---------------------------
 	return (
 		<div className="min-h-[300vh] font-['Inter']">
+			{/* WEBSITE LOADER */}
+{!bgReady && (
+  <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black text-white">
+    <div className="flex flex-col items-center gap-4">
+      <span
+        className="text-[28px] tracking-widest"
+        style={{ fontFamily: '"Sangkala", sans-serif' }}
+      >
+        Rolet
+      </span>
+
+      <div className="w-12 h-12 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+
+      <span
+        className="text-xs tracking-[0.3em] text-white/70"
+        style={{ fontFamily: '"Afacad", sans-serif' }}
+      >
+        LOADING
+      </span>
+    </div>
+  </div>
+)}
+
 			<section
 				ref={heroRef}
 				className="relative w-full overflow-hidden"
