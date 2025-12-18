@@ -36,7 +36,7 @@ const responsiveConfig = {
 	},
 	bags: {
 		mobile: {
-			container: "bottom-[8mm]",
+			container: "top-[30mm]",
 			maxWidth: "max-w-md",
 			left: "w-[48%]",
 			center: "w-[42%]",
@@ -50,7 +50,7 @@ const responsiveConfig = {
 			right: "md:w-[34%]",
 		},
 		desktop: {
-			container: "lg:bottom-[5mm]",
+			container: "lg:top-[50mm]",
 			maxWidth: "lg:max-w-5xl",
 			left: "lg:w-[32%]",
 			center: "lg:w-[30%]",
@@ -856,7 +856,7 @@ ScrollTrigger.config({
 				</div>
 
 				{/* Bottom Showcase */}
-				<div className="absolute bottom-0 left-0 right-0 flex flex-col items-center justify-center pb-24">
+				<div className="absolute bottom-0 left-0 right-0 flex flex-col items-center justify-center">
 					{/* Bags Row */}
 					<div
 						className={`relative z-10 flex justify-center items-end w-full ${responsiveConfig.bags.mobile.maxWidth} ${responsiveConfig.bags.tablet.maxWidth} ${responsiveConfig.bags.desktop.maxWidth} ${responsiveConfig.bags.mobile.container} ${responsiveConfig.bags.tablet.container} ${responsiveConfig.bags.desktop.container}`}
@@ -884,9 +884,9 @@ ScrollTrigger.config({
 						/>
 					</div>
 
-					{/* Podium */}
+					{/* Podium - keep 2mm gap below bags across all screens */}
 					<div
-						className={`podium-bg absolute bottom-0 w-full ${responsiveConfig.podium.mobile.height} ${responsiveConfig.podium.tablet.height} ${responsiveConfig.podium.desktop.height} bg-no-repeat opacity-0 ${responsiveConfig.podium.mobile.backgroundSize} ${responsiveConfig.podium.tablet.backgroundSize} ${responsiveConfig.podium.desktop.backgroundSize} ${responsiveConfig.podium.mobile.backgroundPosition} ${responsiveConfig.podium.tablet.backgroundPosition} ${responsiveConfig.podium.desktop.backgroundPosition}`}
+						className={`podium-bg w-full mt-[2mm] ${responsiveConfig.podium.mobile.height} ${responsiveConfig.podium.tablet.height} ${responsiveConfig.podium.desktop.height} bg-no-repeat opacity-0 ${responsiveConfig.podium.mobile.backgroundSize} ${responsiveConfig.podium.tablet.backgroundSize} ${responsiveConfig.podium.desktop.backgroundSize} ${responsiveConfig.podium.mobile.backgroundPosition} ${responsiveConfig.podium.tablet.backgroundPosition} ${responsiveConfig.podium.desktop.backgroundPosition}`}
 						style={{
 							backgroundImage: `url(${podiumBaseImg})`,
 							zIndex: -10,
