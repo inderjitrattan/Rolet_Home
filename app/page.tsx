@@ -109,28 +109,128 @@ const useIsomorphicLayoutEffect =
 	typeof window !== "undefined" ? useLayoutEffect : useEffect;
 
 function HomePage() {
-	// Hide the page BEFORE GSAP initializes (prevents refresh glitch)
-	useEffect(() => {
-		document.documentElement.classList.add("gsap-init");
-	}, []);
+// Hide the page BEFORE GSAP initializes (prevents refresh glitch)
+useEffect(() => {
+	document.documentElement.classList.add("gsap-init");
+}, []);
 
-	const heroRef = useRef<HTMLDivElement | null>(null);
-	const bgImgRef = useRef<HTMLImageElement | null>(null);
-	const bagLeft = useRef<HTMLImageElement | null>(null);
-	const bagCenter = useRef<HTMLImageElement | null>(null);
-	const bagRight = useRef<HTMLImageElement | null>(null);
+const heroRef = useRef<HTMLDivElement | null>(null);
+const bgImgRef = useRef<HTMLImageElement | null>(null);
+const bagLeft = useRef<HTMLImageElement | null>(null);
+const bagCenter = useRef<HTMLImageElement | null>(null);
+const bagRight = useRef<HTMLImageElement | null>(null);
+const audioRef = useRef<HTMLAudioElement | null>(null);
 
-	const [isMobile, setIsMobile] = useState(false);
-	const [bgReady, setBgReady] = useState(false);
+const [isMobile, setIsMobile] = useState(false);
+const [bgReady, setBgReady] = useState(false);
+const [isMuted, setIsMuted] = useState(false);
+const [isPlaying, setIsPlaying] = useState(false);
 
-	const mainProductImg = "/images/product/product-main.webp";
-	const incenseSticksImg = "/images/product/incense-sticks.webp";
-	const bag1 = "/images/product/product-bag-1.webp";
-	const bag2 = "/images/product/product-bag-2.webp";
-	const bag3 = "/images/product/product-bag-3.webp";
-	const incenseHolderImg = "/images/product/Holder.webp";
-	const podiumBaseImg = "/images/product/podium-base.webp";
-	const bgImgSrc = "/images/backgrounds/forest-bg.webp";
+const mainProductImg = "/images/product/product-main.webp";
+const incenseSticksImg = "/images/product/incense-sticks.webp";
+const bag1 = "/images/product/product-bag-1.webp";
+const bag2 = "/images/product/product-bag-2.webp";
+const bag3 = "/images/product/product-bag-3.webp";
+const incenseHolderImg = "/images/product/Holder.webp";
+const podiumBaseImg = "/images/product/podium-base.webp";
+const bgImgSrc = "/images/backgrounds/forest-bg.webp";
+
+// Start muted to satisfy autoplay policies, then fade in volume if not muted
+const fadeInVolume = () => {
+	if (!audioRef.current) return;
+	const target = 0.3;
+	audioRef.current.muted = false;
+	let current = 0;
+	const step = 0.05;
+	const iv = setInterval(() => {
+		if (!audioRef.current) {
+			clearInterval(iv);
+			return;
+		}
+		current = Math.min(target, (audioRef.current.volume || 0) + step);
+		audioRef.current.volume = current;
+		if (current >= target) {
+			clearInterval(iv);
+		}
+	}, 120);
+};
+
+// Ensure audio plays (used by buttons and fallbacks)
+const ensureAudioPlaying = async () => {
+	if (!audioRef.current) return;
+	try {
+		audioRef.current.muted = true;
+		audioRef.current.volume = 0;
+		if (audioRef.current.paused) {
+			await audioRef.current.play();
+		}
+		setIsPlaying(!audioRef.current.paused);
+		if (!isMuted) {
+			fadeInVolume();
+		}
+	} catch (err) {
+		console.log('Audio playback blocked; user interaction needed');
+	}
+};
+
+// Toggle mute
+const toggleMute = async () => {
+	if (!audioRef.current) return;
+	const nextMuted = !isMuted;
+	audioRef.current.muted = nextMuted;
+	setIsMuted(nextMuted);
+	if (!nextMuted) {
+		await ensureAudioPlaying();
+		fadeInVolume();
+	}
+};
+
+// Auto-play background music with user-interaction fallback
+useEffect(() => {
+	let attemptedAutoplay = false;
+
+	const tryPlay = async () => {
+		if (!audioRef.current) return false;
+		try {
+			audioRef.current.muted = true;
+			audioRef.current.volume = 0;
+			await audioRef.current.play();
+			setIsPlaying(true);
+			if (!isMuted) {
+				fadeInVolume();
+			}
+			return true;
+		} catch (error) {
+			console.log('Audio playback blocked; waiting for user interaction');
+			setIsPlaying(false);
+			return false;
+		}
+	};
+
+	const handleUserInteract = async () => {
+		const played = await tryPlay();
+		if (played) {
+			['click', 'touchstart', 'keydown'].forEach((ev) =>
+				document.removeEventListener(ev, handleUserInteract),
+			);
+		}
+	};
+
+	if (bgReady && !attemptedAutoplay) {
+		attemptedAutoplay = true;
+		tryPlay();
+	}
+
+	['click', 'touchstart', 'keydown'].forEach((ev) =>
+		document.addEventListener(ev, handleUserInteract),
+	);
+
+	return () => {
+		['click', 'touchstart', 'keydown'].forEach((ev) =>
+			document.removeEventListener(ev, handleUserInteract),
+		);
+	};
+}, [bgReady, isMuted]);
 
 	// Wait for background image to load — avoid using bgImgRef.current in deps
 	useEffect(() => {
@@ -756,18 +856,61 @@ ScrollTrigger.config({
 		<div className="relative z-10 flex flex-col items-center justify-center h-full text-center text-white px-4">
 			<div className="absolute inset-0 flex flex-col items-center justify-center">
 {/* SCROLL INDICATOR */}
-<div className="scroll-indicator fixed top-[20%] left-1/2 -translate-x-1/2 z-30 flex flex-col items-center gap-2">
-  <span
-    className="text-[12px] tracking-[0.3em] text-white/80"
-    style={{ fontFamily: '"Afacad", sans-serif' }}
-  >
-    SCROLL
-  </span>
-
-  <div className="w-[2px] h-10 bg-white/70 relative overflow-hidden">
-    <span className="absolute top-0 left-0 w-full h-4 bg-white animate-scrollLine" />
+<button
+  className="scroll-indicator fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[100] cursor-pointer transition-all duration-150 active:scale-95"
+  onClick={() => {
+    window.scrollTo({
+      top: window.innerHeight,
+      behavior: 'smooth'
+    });
+  }}
+>
+  <div className="relative w-32 h-32 md:w-40 md:h-40">
+    {/* Circular Background */}
+    <div className="absolute inset-0 rounded-full bg-white/10 backdrop-blur-sm" />
+    
+    {/* Circular Text */}
+    <svg 
+      className="absolute inset-0 w-full h-full pointer-events-none" 
+      viewBox="0 0 160 160"
+      style={{ animation: 'spin 15s linear infinite' }}
+    >
+      <defs>
+        <path
+          id="circlePath"
+          d="M 80, 80 m -60, 0 a 60,60 0 1,1 120,0 a 60,60 0 1,1 -120,0"
+        />
+      </defs>
+      <text
+        className="text-[15px] md:text-[15px] tracking-[0.4em] fill-white/70"
+        style={{ fontFamily: '"Afacad", sans-serif' }}
+      >
+        <textPath href="#circlePath" startOffset="0%">
+          SCROLL DOWN • SCROLL DOWN • 
+        </textPath>
+      </text>
+    </svg>
+    
+    {/* Center Arrow */}
+    <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+      <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-gray-800/90 flex items-center justify-center">
+        <svg 
+          className="w-5 h-5 md:w-6 md:h-6 text-white animate-bounce-subtle"
+          fill="none" 
+          stroke="currentColor" 
+          viewBox="0 0 24 24"
+        >
+          <path 
+            strokeLinecap="round" 
+            strokeLinejoin="round" 
+            strokeWidth={2.5} 
+            d="M19 14l-7 7m0 0l-7-7m7 7V3" 
+          />
+        </svg>
+      </div>
+    </div>
   </div>
-</div>
+</button>
 
 				{/* Headline */}
 				<div className="hero-headline absolute text-center px-4">
@@ -923,6 +1066,36 @@ ScrollTrigger.config({
 	// --------------------------- RENDER ---------------------------
 	return (
 		<div className="min-h-[300vh] font-['Inter']">
+			{/* BACKGROUND MUSIC */}
+			<audio
+				ref={audioRef}
+				loop
+				preload="auto"
+				autoPlay
+				muted
+				playsInline
+			>
+				<source src="/music/background-music.mp3" type="audio/mpeg" />
+			</audio>
+
+			{/* MUTE/UNMUTE BUTTON */}
+			<button
+				onClick={toggleMute}
+				className="fixed bottom-6 right-6 z-[101] w-12 h-12 rounded-full bg-white/10 backdrop-blur-sm hover:bg-white/20 transition-all duration-300 flex items-center justify-center group"
+				aria-label={isMuted ? "Unmute" : "Mute"}
+			>
+				{isMuted ? (
+					<svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+						<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2" />
+					</svg>
+				) : (
+					<svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+					</svg>
+				)}
+			</button>
+
 			{/* WEBSITE LOADER */}
 {!bgReady && (
   <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black text-white">
