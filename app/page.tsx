@@ -123,14 +123,14 @@ function HomePage() {
 	const [isMobile, setIsMobile] = useState(false);
 	const [bgReady, setBgReady] = useState(false);
 
-	const mainProductImg = "/images/product/product-main.png";
-	const incenseSticksImg = "/images/product/incense-sticks.png";
-	const bag1 = "/images/product/product-bag-1.png";
-	const bag2 = "/images/product/product-bag-2.png";
-	const bag3 = "/images/product/product-bag-3.png";
-	const incenseHolderImg = "/images/product/Holder.png";
-	const podiumBaseImg = "/images/product/podium-base.png";
-	const bgImgSrc = "/images/backgrounds/forest-bg.jpg";
+	const mainProductImg = "/images/product/product-main.webp";
+	const incenseSticksImg = "/images/product/incense-sticks.webp";
+	const bag1 = "/images/product/product-bag-1.webp";
+	const bag2 = "/images/product/product-bag-2.webp";
+	const bag3 = "/images/product/product-bag-3.webp";
+	const incenseHolderImg = "/images/product/Holder.webp";
+	const podiumBaseImg = "/images/product/podium-base.webp";
+	const bgImgSrc = "/images/backgrounds/forest-bg.webp";
 
 	// Wait for background image to load — avoid using bgImgRef.current in deps
 	useEffect(() => {
@@ -955,37 +955,37 @@ ScrollTrigger.config({
 				{/* Floating Leaves */}
 				<div className="leaves-wrapper pointer-events-none absolute inset-0 overflow-visible">
 					<img
-						src="/Leaves-04.png"
+						src="/Leaves-04.webp"
 						alt="Decorative leaf 1"
 						className="leaf leaf-1"
 					/>
 					<img
-						src="/Leaves-05.png"
+						src="/Leaves-05.webp"
 						alt="Decorative leaf 2"
 						className="leaf leaf-2"
 					/>
 					<img
-						src="/Leaves-03.png"
+						src="/Leaves-03.webp"
 						alt="Decorative leaf 3"
 						className="leaf leaf-3"
 					/>
 					<img
-						src="/Leaves-02.png"
+						src="/Leaves-02.webp"
 						alt="Decorative leaf 4"
 						className="leaf leaf-4"
 					/>
 					<img
-						src="/Leaves-04.png"
+						src="/Leaves-04.webp"
 						alt="Decorative leaf 5"
 						className="leaf leaf-5"
 					/>
 					<img
-						src="/Leaves-03.png"
+						src="/Leaves-03.webp"
 						alt="Decorative leaf 6"
 						className="leaf leaf-6"
 					/>
 					<img
-						src="/Leaves-04.png"
+						src="/Leaves-04.webp"
 						alt="Decorative leaf 7"
 						className="leaf leaf-7"
 					/>

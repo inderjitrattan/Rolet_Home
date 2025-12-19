@@ -38,7 +38,7 @@ export default function Navbar() {
         {/* LOGO */}
         <Link href="/" className="flex items-center">
           <Image
-            src="/images/logo/rolet-logo.png"
+            src="/images/logo/rolet-logo.webp"
             alt="Rolet"
             width={130}
             height={34}
@@ -52,7 +52,7 @@ export default function Navbar() {
           className="hidden lg:flex items-center space-x-10 font-medium text-[18px] py-[15px] tracking-[0.07em] leading-[1.3]"style={{ fontFamily: '"Afacad", sans-serif' }}>
           <li>
             <Link
-              href="/"
+              href="https://rolet.store/"
               className="cursor-pointer hover:opacity-80 transition-opacity"
             >
               Home
@@ -60,7 +60,7 @@ export default function Navbar() {
           </li>
           <li>
             <Link
-              href="/inception"
+              href="https://shop.rolet.store/about-us"
               className="cursor-pointer hover:opacity-80 transition-opacity"
             >
               Rolet Inception
@@ -68,7 +68,7 @@ export default function Navbar() {
           </li>
           <li>
             <Link
-              href="/products"
+              href="https://shop.rolet.store/collections"
               className="cursor-pointer hover:opacity-80 transition-opacity"
             >
               Products
@@ -76,7 +76,7 @@ export default function Navbar() {
           </li>
           <li>
             <Link
-              href="/blogs"
+              href="https://shop.rolet.store/blogs"
               className="cursor-pointer hover:opacity-80 transition-opacity"
             >
               Blogs
@@ -84,7 +84,7 @@ export default function Navbar() {
           </li>
           <li>
             <Link
-              href="/contact"
+              href="http://shop.rolet.store/contact-us"
               className="cursor-pointer hover:opacity-80 transition-opacity"
             >
               Contact Us
@@ -122,7 +122,7 @@ export default function Navbar() {
           {/* MOBILE HEADER */}
           <div className="flex items-center justify-between px-6 py-6">
             <Image
-              src="/images/logo/rolet-logo.png"
+              src="/images/logo/rolet-logo.webp"
               alt="Rolet"
               width={173}
               height={34}
@@ -137,27 +137,27 @@ export default function Navbar() {
           {/* MOBILE LINKS */}
           <ul className="flex flex-col items-center space-y-8 mt-10 font-medium text-[18px] tracking-[0.07em] leading-[1.3]">
             <li>
-              <Link href="/" onClick={() => setOpen(false)}>
+              <Link href="https://rolet.store/" onClick={() => setOpen(false)}>
                 Home
               </Link>
             </li>
             <li>
-              <Link href="/inception" onClick={() => setOpen(false)}>
+              <Link href="https://shop.rolet.store/about-us" onClick={() => setOpen(false)}>
                 Rolet Inception
               </Link>
             </li>
             <li>
-              <Link href="/products" onClick={() => setOpen(false)}>
+              <Link href="https://shop.rolet.store/collections" onClick={() => setOpen(false)}>
                 Products
               </Link>
             </li>
             <li>
-              <Link href="/blogs" onClick={() => setOpen(false)}>
+              <Link href="https://shop.rolet.store/blogs" onClick={() => setOpen(false)}>
                 Blogs
               </Link>
             </li>
             <li>
-              <Link href="/contact" onClick={() => setOpen(false)}>
+              <Link href="http://shop.rolet.store/contact-us" onClick={() => setOpen(false)}>
                 Contact Us
               </Link>
             </li>
