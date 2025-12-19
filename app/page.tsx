@@ -862,7 +862,7 @@ ScrollTrigger.config({
 				))}
 
 				{/* CTA */}
-				<div className="cta-final absolute opacity-0 flex flex-col items-center justify-center">
+				<div className="cta-final absolute opacity-0 flex flex-col items-center justify-center pointer-events-none" style={{ zIndex: 50 }}>
 					<p
 						className="mb-4 text-green-200 text-[18px] md:text-[32px]"
 						style={{ fontFamily: '"Afacad", sans-serif' }}
@@ -870,11 +870,11 @@ ScrollTrigger.config({
 						Unveil a world of refined aromas crafted to awaken the senses and
 						elevate your everyday rituals.
 					</p>
-					<Link href="/products" className="inline-block">
-						<button className="px-8 py-3 bg-white text-black font-semibold tracking-wider rounded-[25px] shadow-lg hover:bg-gray-100 transition-colors">
+					<a href="https://shop.rolet.store/collections" className="inline-block pointer-events-auto" rel="noopener noreferrer">
+						<button className="px-8 py-3 bg-white text-black font-semibold tracking-wider rounded-[25px] shadow-lg hover:bg-gray-100 transition-colors cursor-pointer">
 							EXPLORE NOW
 						</button>
-					</Link>
+					</a>
 				</div>
 
 				{/* Bottom Showcase */}
