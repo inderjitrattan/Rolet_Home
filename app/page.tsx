@@ -1005,9 +1005,9 @@ ScrollTrigger.config({
 				))}
 
 				{/* CTA */}
-				<div className="cta-final absolute opacity-0 flex flex-col items-center justify-center pointer-events-none" style={{ zIndex: 50 }}>
+				<div className="cta-final absolute opacity-0 flex flex-col items-center justify-center pointer-events-none px-6 md:px-12" style={{ zIndex: 50 }}>
 					<p
-						className="mb-4 text-green-200 text-[18px] md:text-[32px]"
+						className="mb-4 text-green-200 text-[16px] md:text-[32px]"
 						style={{ fontFamily: '"Afacad", sans-serif' }}
 					>
 						Unveil a world of refined aromas crafted to awaken the senses and

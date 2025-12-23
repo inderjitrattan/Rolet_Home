@@ -3,38 +3,15 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
-import {
-  RiHeartLine,
-  RiMenuLine,
-  RiUserLine,
-  RiCloseLine,
-  RiSearchLine,
-  RiShoppingBagLine,
-} from "react-icons/ri";
+
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
-  const router = useRouter();
-
-  const isAuthenticated =
-    typeof document !== "undefined" &&
-    document.cookie.includes("uat_multikart=");
-
-  const handleProfileClick = () => {
-    isAuthenticated
-      ? router.push("/account/dashboard")
-      : router.push("/login");
-  };
-
-  const handleWishlistClick = () => {
-    isAuthenticated ? router.push("/wishlist") : router.push("/login");
-  };
 
   return (
     <header className="fixed top-0 left-0 w-full z-[100] pointer-events-none">
       {/* MAIN NAV BAR */}
-      <div className="pointer-events-auto flex items-center justify-between px-6 lg:px-16 py-6">
+      <div className="pointer-events-auto w-full flex items-center justify-between px-6 lg:px-16 py-6 bg-transparent text-white">
         {/* LOGO */}
         <Link href="/" className="flex items-center">
           <Image
@@ -92,27 +69,13 @@ export default function Navbar() {
           </li>
         </ul>
 
-        {/* ICONS (DESKTOP) */}
-        <div className="hidden lg:flex items-center space-x-5 text-[20px]">
-          <RiSearchLine className="cursor-pointer hover:opacity-70 transition" />
-          <RiHeartLine
-            className="cursor-pointer hover:opacity-70 transition"
-            onClick={handleWishlistClick}
-          />
-          <RiShoppingBagLine className="cursor-pointer hover:opacity-70 transition" />
-          <RiUserLine
-            className="cursor-pointer hover:opacity-70 transition"
-            onClick={handleProfileClick}
-          />
-        </div>
-
         {/* MOBILE MENU BUTTON */}
         <button
-          className="lg:hidden"
+          className="lg:hidden text-white"
           onClick={() => setOpen(true)}
           aria-label="Open menu"
         >
-          <RiMenuLine className="text-[26px]" />
+          Menu
         </button>
       </div>
 
@@ -130,7 +93,7 @@ export default function Navbar() {
               className="w-[140px] md:w-[173px] object-contain"
             />
             <button onClick={() => setOpen(false)} aria-label="Close menu">
-              <RiCloseLine className="text-[26px] text-white" />
+              Close
             </button>
           </div>
 
@@ -163,13 +126,6 @@ export default function Navbar() {
             </li>
           </ul>
 
-          {/* MOBILE ICONS */}
-          <div className="flex justify-center space-x-6 mt-12 text-[22px]">
-            <RiSearchLine />
-            <RiHeartLine onClick={handleWishlistClick} />
-            <RiShoppingBagLine />
-            <RiUserLine onClick={handleProfileClick} />
-          </div>
         </div>
       )}
     </header>
