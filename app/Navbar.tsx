@@ -165,22 +165,6 @@ export default function Navbar() {
               </Link>
             </li>
           </ul>
-
-          {/* MOBILE ICONS */}
-          <div className="flex justify-center space-x-6 mt-12 text-[22px]">
-            <a href={shopUrl} className="cursor-pointer hover:opacity-70 transition" aria-label="Shop">
-              <RiSearchLine />
-            </a>
-            <a href={shopUrl} className="cursor-pointer hover:opacity-70 transition" aria-label="Shop">
-              <RiHeartLine />
-            </a>
-            <a href={shopUrl} className="cursor-pointer hover:opacity-70 transition" aria-label="Shop">
-              <RiShoppingBagLine />
-            </a>
-            <a href={shopUrl} className="cursor-pointer hover:opacity-70 transition" aria-label="Shop">
-              <RiUserLine />
-            </a>
-          </div>
         </div>
       )}
     </header>
