@@ -3,15 +3,23 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-
+import {
+  RiHeartLine,
+  RiMenuLine,
+  RiUserLine,
+  RiCloseLine,
+  RiSearchLine,
+  RiShoppingBagLine,
+} from "react-icons/ri";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
+  const shopUrl = "https://shop.rolet.store";
 
   return (
     <header className="fixed top-0 left-0 w-full z-[100] pointer-events-none">
       {/* MAIN NAV BAR */}
-      <div className="pointer-events-auto w-full flex items-center justify-between px-6 lg:px-16 py-6 bg-transparent text-white">
+      <div className="pointer-events-auto flex items-center justify-between px-6 lg:px-70 py-6 text-white">
         {/* LOGO */}
         <Link href="/" className="flex items-center">
           <Image
@@ -69,13 +77,45 @@ export default function Navbar() {
           </li>
         </ul>
 
+        {/* ICONS (DESKTOP) */}
+        <div className="hidden lg:flex items-center space-x-5 text-[20px]">
+          <a
+            href={shopUrl}
+            className="cursor-pointer hover:opacity-70 transition"
+            aria-label="Shop"
+          >
+            <RiSearchLine />
+          </a>
+          <a
+            href={shopUrl}
+            className="cursor-pointer hover:opacity-70 transition"
+            aria-label="Shop"
+          >
+            <RiHeartLine />
+          </a>
+          <a
+            href={shopUrl}
+            className="cursor-pointer hover:opacity-70 transition"
+            aria-label="Shop"
+          >
+            <RiShoppingBagLine />
+          </a>
+          <a
+            href={shopUrl}
+            className="cursor-pointer hover:opacity-70 transition"
+            aria-label="Shop"
+          >
+            <RiUserLine />
+          </a>
+        </div>
+
         {/* MOBILE MENU BUTTON */}
         <button
           className="lg:hidden text-white"
           onClick={() => setOpen(true)}
           aria-label="Open menu"
         >
-          Menu
+          <RiMenuLine className="text-[26px]" />
         </button>
       </div>
 
@@ -93,7 +133,7 @@ export default function Navbar() {
               className="w-[140px] md:w-[173px] object-contain"
             />
             <button onClick={() => setOpen(false)} aria-label="Close menu">
-              Close
+              <RiCloseLine className="text-[26px] text-white" />
             </button>
           </div>
 
@@ -126,6 +166,21 @@ export default function Navbar() {
             </li>
           </ul>
 
+          {/* MOBILE ICONS */}
+          <div className="flex justify-center space-x-6 mt-12 text-[22px]">
+            <a href={shopUrl} className="cursor-pointer hover:opacity-70 transition" aria-label="Shop">
+              <RiSearchLine />
+            </a>
+            <a href={shopUrl} className="cursor-pointer hover:opacity-70 transition" aria-label="Shop">
+              <RiHeartLine />
+            </a>
+            <a href={shopUrl} className="cursor-pointer hover:opacity-70 transition" aria-label="Shop">
+              <RiShoppingBagLine />
+            </a>
+            <a href={shopUrl} className="cursor-pointer hover:opacity-70 transition" aria-label="Shop">
+              <RiUserLine />
+            </a>
+          </div>
         </div>
       )}
     </header>
