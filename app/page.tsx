@@ -915,7 +915,7 @@ ScrollTrigger.config({
 				{/* Headline */}
 				<div className="hero-headline absolute text-center px-4">
 					<h1
-						className="font-serif font-normal leading-snug text-[34px] md:text-[95px] md:leading-tight"
+						className="font-serif font-normal leading-snug text-[33px] md:text-[95px] md:leading-tight"
 						style={{ fontFamily: '"Sangkala", sans-serif' }}
 					>
 						Fragrance That Elevates
@@ -1007,14 +1007,16 @@ ScrollTrigger.config({
 				{/* CTA */}
 				<div className="cta-final absolute opacity-0 flex flex-col items-center justify-center pointer-events-none px-6 md:px-12" style={{ zIndex: 50 }}>
 					<p
-						className="mb-4 text-green-200 text-[16px] md:text-[32px]"
+						className="mb-4 text-green-200 text-[16px] md:text-[28px]"
 						style={{ fontFamily: '"Afacad", sans-serif' }}
 					>
 						Unveil a world of refined aromas crafted to awaken the senses and
 						elevate your everyday rituals.
 					</p>
-					<a href="https://shop.rolet.store/collections" className="inline-block pointer-events-auto" rel="noopener noreferrer">
-						<button className="px-8 py-3 bg-white text-black font-semibold tracking-wider rounded-[25px] shadow-lg hover:bg-gray-100 transition-colors cursor-pointer">
+					<a href="https://shop.rolet.store/collections" className="inline-block pointer-events-auto" rel="noopener noreferrer"
+					style={{ fontFamily: '"Sangkala", sans-serif' }}
+					>
+						<button className="bg-white text-black font-semibold tracking-wider rounded-[25px] shadow-lg hover:bg-gray-100 transition-colors cursor-pointer" style={{ padding: '6px 20px 2px 18px' }}>
 							EXPLORE NOW
 						</button>
 					</a>
