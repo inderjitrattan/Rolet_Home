@@ -695,7 +695,7 @@ heroTL.to(
 							".incense-container",
 							{
 								xPercent: -45,
-								yPercent: 33,
+								yPercent: 30,
 								rotation: 0,
 								scale: 0.8,
 								duration: 1.4,
@@ -769,7 +769,7 @@ heroTL.to(
 						heroTL.fromTo(
 							".cta-final",
 							{ opacity: 0, y: -230 },
-							{ opacity: 1, y: -190, duration: 1.0 },
+							{ opacity: 1, y: -130, duration: 1.0 },
 							"-=1.4",
 						);
 					}

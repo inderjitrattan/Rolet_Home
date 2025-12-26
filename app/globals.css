@@ -70,14 +70,14 @@ html {
 }
 
 .leaf-1 {
-  width: 90px;
+  width: 75px;
   top: 14%;
   right: 35%;
   transform: rotate(300deg);
 }
 
 .leaf-2 {
-  width: 140px;
+  width: 125px;
   top: 20%;
   right: 7%;
   transform: rotate(8deg);
@@ -86,35 +86,35 @@ html {
 .leaf-3 {
   top: 19%;
   left: 9%;
-  width: 140px;
+  width: 125px;
   transform: rotate(130deg);
 }
 
 .leaf-4 {
   top: 75%;
   left: 10%;
-  width: 320px;
+  width: 305px;
   transform: rotate(330deg);
   filter: blur(3px);
   opacity: 0.9;
 }
 
 .leaf-5 {
-  width: 100px;
+  width: 85px;
   top: 45%;
   right: 5%;
   transform: rotate(-5deg);
 }
 
 .leaf-6 {
-  width: 120px;
+  width: 105px;
   top: 10%;
   left: 40%;
   transform: rotate(225deg);
 }
 
 .leaf-7 {
-  width: 75px;
+  width: 60px;
   top: 80%;
   right: 40%;
   transform: rotate(140deg);
