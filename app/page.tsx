@@ -695,7 +695,7 @@ heroTL.to(
 							".incense-container",
 							{
 								xPercent: -45,
-								yPercent: 37,
+								yPercent: 33,
 								rotation: 0,
 								scale: 0.8,
 								duration: 1.4,
